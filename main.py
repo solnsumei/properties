@@ -1,6 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
+from tortoise.contrib.fastapi import register_tortoise
 from config import Config
+from src.api import investments
 
 
 def create_app(_config: Config):
@@ -9,6 +11,19 @@ def create_app(_config: Config):
     @_app.get("/")
     def index():
         return {"message": "Welcome to properties API"}
+
+    _app.include_router(
+        investments.router,
+        prefix=f"{_config.API_URL}/investments"
+    )
+
+    register_tortoise(
+        _app,
+        db_url=_config.DATABASE_URI,
+        modules={"models": ["src.models.models"]},
+        generate_schemas=True,
+        add_exception_handlers=True
+    )
 
     return _app
 

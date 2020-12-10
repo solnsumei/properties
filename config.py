@@ -8,6 +8,7 @@ class Config:
     SECRET_KEY = None
     PORT = None
     DATABASE_URI = None
+    API_URL = None
 
     @classmethod
     def load_config(cls):
@@ -17,6 +18,7 @@ class Config:
         cls.APP_ENVIRONMENT = os.environ.get('ENVIRONMENT')
         cls.SECRET_KEY = os.environ.get('APP_SECRET')
         cls.PORT = int(os.environ.get('PORT'))
+        cls.API_URL = os.environ.get('API_URL')
 
         if cls.APP_ENVIRONMENT == 'development':
             cls.DATABASE_URI = os.environ.get("DATABASE_URI")

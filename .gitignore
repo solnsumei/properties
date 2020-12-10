@@ -2,6 +2,8 @@
 venv/
 .env
 **.db
+**.db-shm
+**.db-wal
 __pycache__/
 .DS_Store
 **/.DS_Store
