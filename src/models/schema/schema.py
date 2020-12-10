@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import Field
-from .baseschema import BaseSchema, NameDescriptionSchema
+from .baseschema import NameDescriptionSchema
 
 
 class InvestmentSchema(NameDescriptionSchema):

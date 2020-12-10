@@ -11,6 +11,10 @@ class AppBaseModel(models.Model):
 
     """ Database methods """
     @classmethod
+    async def create_one(cls, item):
+        return await cls.create(**item.dict())
+
+    @classmethod
     async def find_by(cls, **kwargs):
         return await cls.filter(**kwargs).all()
 
@@ -27,6 +31,26 @@ class AppBaseModel(models.Model):
     async def delete_one(cls, _id: int) -> int:
         deleted_count = await cls.filter(id=_id).delete()
         return deleted_count
+
+    class Meta:
+        __abstract__ = True
+
+
+class SluggableModel(AppBaseModel):
+    slug = fields.CharField(max_length=70)
+
+    """ Database methods """
+    @classmethod
+    async def create_one(cls, item):
+        return await cls.create(**item.dict(), slug=cls.make_slug(item.name))
+
+    @classmethod
+    async def update_one(cls, _id: int, item):
+        await cls.filter(id=_id).update(
+            **item.dict(exclude_unset=True),
+            slug=cls.make_slug(item.name)
+        )
+        return cls.get(id=_id)
 
     """ Utility methods """
     @classmethod

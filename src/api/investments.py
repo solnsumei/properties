@@ -18,7 +18,17 @@ async def fetch_investment(investment_id: int):
 
 @router.post("/", status_code=201)
 async def create(investment: InvestmentSchema):
-    new_investment = await Investment.create(
-        **investment.dict(), slug=Investment.make_slug(investment.name)
-    )
+    new_investment = await Investment.create_one(investment)
     return await InvestmentPydantic.from_tortoise_orm(new_investment)
+
+
+@router.put("/{investment_id}")
+async def update(investment_id: int, investment: InvestmentSchema):
+    updated_investment = await Investment.update_one(investment_id, investment)
+    return await InvestmentPydantic.from_queryset_single(updated_investment)
+
+
+@router.delete("/{investment_id}")
+async def delete(investment_id: int):
+    await Investment.delete_one(investment_id)
+    return {"message": "Item deleted successfully"}
