@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 from config import Config
-from src.api import investments
+from src.api import investments, properties
 
 
 def create_app(_config: Config):
@@ -15,6 +15,11 @@ def create_app(_config: Config):
     _app.include_router(
         investments.router,
         prefix=f"{_config.API_URL}/investments"
+    )
+
+    _app.include_router(
+        properties.router,
+        prefix=f"{_config.API_URL}/properties"
     )
 
     register_tortoise(

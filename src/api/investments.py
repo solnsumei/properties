@@ -11,7 +11,7 @@ async def fetch_all():
 
 
 @router.get("/{investment_id}")
-async def fetch_investment(investment_id: int):
+async def fetch_one(investment_id: int):
     return await InvestmentPydantic\
         .from_queryset_single(Investment.get(id=investment_id))
 
