@@ -9,6 +9,8 @@ class Config:
     PORT = None
     DATABASE_URI = None
     API_URL = None
+    ALGORITHM = None
+    ACCESS_TOKEN_EXPIRE_MINUTES = None
 
     @classmethod
     def load_config(cls):
@@ -19,6 +21,9 @@ class Config:
         cls.SECRET_KEY = os.environ.get('APP_SECRET')
         cls.PORT = int(os.environ.get('PORT'))
         cls.API_URL = os.environ.get('API_URL')
+
+        cls.ALGORITHM = os.environ.get('ALGORITHM')
+        cls.ACCESS_TOKEN_EXPIRE_MINUTES = os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES')
 
         if cls.APP_ENVIRONMENT == 'development':
             cls.DATABASE_URI = os.environ.get("DATABASE_URI")

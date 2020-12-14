@@ -1,20 +1,21 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from tortoise.contrib.fastapi import register_tortoise
 from config import Config
 from src.api import investments, properties
+from src.utils import security
 
 
 def create_app(_config: Config):
     _app = FastAPI()
 
     @_app.get("/")
-    def index():
+    def index(token=Depends(security.get_current_user)):
         return {"message": "Welcome to properties API"}
 
     _app.include_router(
         investments.router,
-        prefix=f"{_config.API_URL}/investments"
+        prefix=f"{_config.API_URL}/investments",
     )
 
     _app.include_router(
