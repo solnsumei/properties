@@ -1,6 +1,31 @@
+from passlib.context import CryptContext
 from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise import fields
-from .appbasemodel import SluggableModel
+from .appbasemodel import SluggableModel, AppBaseModel
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+class User(AppBaseModel):
+    email = fields.CharField(max_length=50, unique=True)
+    password = fields.CharField(max_length=250)
+    is_admin = fields.BooleanField(default=False)
+
+    @classmethod
+    async def find_by_email(cls, email):
+        return await cls.filter(email=email).first()
+
+    @staticmethod
+    def generate_hash(password: str):
+        return pwd_context.hash(password)
+
+    @staticmethod
+    def verify_hash(password: str, hashed_password: str):
+        return pwd_context.verify(password, hashed_password)
+
+    class PydanticMeta:
+        excludes = ['password']
 
 
 class Property(SluggableModel):
