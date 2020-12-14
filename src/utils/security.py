@@ -5,7 +5,7 @@ from fastapi import Depends
 from fastapi.security import HTTPBearer
 from config import Config
 from src.models.models import User
-from .exceptions import unauthorised_exception
+from .exceptions import unauthorised_exception, login_exception
 
 
 async def authenticate(email: str, password: str):
@@ -13,6 +13,8 @@ async def authenticate(email: str, password: str):
 
     if user and User.verify_hash(password, user.password):
         return user
+
+    raise login_exception()
 
 
 def check_token(auth_token=Depends(HTTPBearer(
@@ -65,9 +67,10 @@ def create_token(data: dict, expiry: Optional[timedelta] = None):
     if expiry:
         expire = datetime.utcnow() + expiry
     else:
-        expire = datetime.utcnow() + timedelta(minutes=30)
+        expire = datetime.utcnow()\
+                 + timedelta(minutes=Config.ACCESS_TOKEN_EXPIRE_MINUTES)
 
     to_encode.update({"exp": expire})
-    token = jwt.encode(to_encode, Config.SECRET_KEY, algorithm=[Config.ALGORITHM])
+    token = jwt.encode(to_encode, Config.SECRET_KEY, algorithm=Config.ALGORITHM)
 
     return token

@@ -25,7 +25,7 @@ class User(AppBaseModel):
         return pwd_context.verify(password, hashed_password)
 
     class PydanticMeta:
-        excludes = ['password']
+        exclude = ('password',)
 
 
 class Property(SluggableModel):
@@ -48,5 +48,6 @@ class Investment(SluggableModel):
     image_url = fields.CharField(max_length=250)
 
 
+UserPydantic = pydantic_model_creator(User, name="User")
 PropertyPydantic = pydantic_model_creator(Property, name="Property")
 InvestmentPydantic = pydantic_model_creator(Investment, name="Investment")

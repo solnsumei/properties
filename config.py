@@ -4,13 +4,13 @@ from dotenv import load_dotenv
 
 
 class Config:
-    APP_ENVIRONMENT = None
-    SECRET_KEY = None
-    PORT = None
-    DATABASE_URI = None
-    API_URL = None
-    ALGORITHM = None
-    ACCESS_TOKEN_EXPIRE_MINUTES = None
+    APP_ENVIRONMENT: str = None
+    SECRET_KEY: str = None
+    PORT: int = None
+    DATABASE_URI: str = None
+    API_URL: str = None
+    ALGORITHM: str = None
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = None
 
     @classmethod
     def load_config(cls):
@@ -23,12 +23,15 @@ class Config:
         cls.API_URL = os.environ.get('API_URL')
 
         cls.ALGORITHM = os.environ.get('ALGORITHM')
-        cls.ACCESS_TOKEN_EXPIRE_MINUTES = os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES')
+        cls.ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES'))
 
         if cls.APP_ENVIRONMENT == 'development':
             cls.DATABASE_URI = os.environ.get("DATABASE_URI")
 
         if cls.APP_ENVIRONMENT == 'production':
             cls.DATABASE_URI = os.environ.get("PRODUCTION_DATABASE_URI")
+
+        if cls.APP_ENVIRONMENT == 'test':
+            cls.DATABASE_URI = os.environ.get("TEST_DATABASE_URI")
 
         return cls
