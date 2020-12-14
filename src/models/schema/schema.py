@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, AnyUrl, EmailStr
 from .baseschema import NameDescriptionSchema
 
 
@@ -7,6 +7,7 @@ class InvestmentSchema(NameDescriptionSchema):
     min_amount: float = Field(..., gt=0)
     roi: float = Field(..., gt=0)
     duration: int = Field(..., gt=0, le=24)
+    image_url: AnyUrl
 
 
 class PropertySchema(NameDescriptionSchema):
@@ -15,4 +16,5 @@ class PropertySchema(NameDescriptionSchema):
     half_plot_price: Optional[float] = Field(None, gt=0)
     promo_price: Optional[float] = Field(None, gt=0)
     is_promo: bool
+    image_url: AnyUrl
 
