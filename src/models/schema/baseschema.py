@@ -1,11 +1,11 @@
-from typing import Optional
+from typing import Optional, Any
 from pydantic import BaseModel, validator, Field
 from src.utils.status import Status
 
 
 class BaseSchema(BaseModel):
     @validator('*', pre=True)
-    def blank_strings(cls, v):
+    def blank_strings(cls, v: Any):
         if type(v) == str:
             striped = v.strip()
             if striped == "":

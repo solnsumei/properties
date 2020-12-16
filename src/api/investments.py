@@ -1,10 +1,11 @@
 from src.models.models import Investment, InvestmentPydantic
 from src.models.schema.schema import InvestmentSchema
-from .baserouter import base_crud_router
+from .baserouter import BaseRouter
 
-
-router = base_crud_router(
+router = BaseRouter(
     request_schema=InvestmentSchema,
     response_schema=InvestmentPydantic,
     model=Investment
 )
+
+router.load_crud_routes()
