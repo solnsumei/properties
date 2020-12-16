@@ -5,7 +5,7 @@ from fastapi import Depends
 from fastapi.security import HTTPBearer
 from config import Config
 from src.models.models import User
-from .exceptions import unauthorised_exception, login_exception
+from .exceptions import UnauthorisedException
 
 
 async def authenticate(email: str, password: str):
@@ -14,7 +14,7 @@ async def authenticate(email: str, password: str):
     if user and User.verify_hash(password, user.password):
         return user
 
-    raise login_exception()
+    raise UnauthorisedException("Username and/or password is incorrect")
 
 
 def check_token(auth_token=Depends(HTTPBearer(
@@ -28,7 +28,7 @@ def check_token(auth_token=Depends(HTTPBearer(
     :return: str
     """
     if auth_token is None:
-        raise unauthorised_exception()
+        raise UnauthorisedException()
 
     try:
         payload = jwt.decode(
@@ -41,9 +41,7 @@ def check_token(auth_token=Depends(HTTPBearer(
         if username is None:
             raise JWTError
     except JWTError:
-        raise unauthorised_exception(
-            message="Invalid token"
-        )
+        raise UnauthorisedException("Authentication failed, invalid token")
     return username
 
 
@@ -55,9 +53,7 @@ async def get_current_user(username: str = Depends(check_token)):
     """
     user = await User.find_by_email(email=username)
     if user is None:
-        raise unauthorised_exception(
-            message="Invalid token"
-        )
+        raise UnauthorisedException("Authentication failed, invalid token")
     return user
 
 
