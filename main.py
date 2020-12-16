@@ -2,8 +2,7 @@ import uvicorn
 from fastapi import FastAPI, Depends
 from config import Config
 from db import init_db
-from src.api import investments, properties, auth, pages
-from src.utils import security
+from routes import add_routers
 
 
 def create_app(_config: Config):
@@ -13,26 +12,7 @@ def create_app(_config: Config):
     def index():
         return {"message": "Welcome to properties API"}
 
-    _app.include_router(
-        auth.router,
-        prefix=f"{_config.API_URL}/auth",
-        tags=["Authentication"]
-    )
-
-    _app.include_router(
-        investments.router,
-        prefix=f"{_config.API_URL}/investments",
-        dependencies=[Depends(security.get_current_user)],
-        tags=["Investments"]
-    )
-
-    _app.include_router(
-        properties.router,
-        prefix=f"{_config.API_URL}/properties",
-        dependencies=[Depends(security.get_current_user)],
-        tags=["Properties"]
-    )
-
+    add_routers(app=_app, config=_config)
     return _app
 
 

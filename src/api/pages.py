@@ -7,3 +7,5 @@ router = BaseRouter(
     request_schema=PageSchema,
     model=Page
 )
+
+router.load_crud_routes()
