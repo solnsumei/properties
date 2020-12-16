@@ -4,8 +4,6 @@ from src.utils.status import Status
 
 
 class BaseSchema(BaseModel):
-    status: Optional[Status] = Field(Status.ACTIVE)
-
     @validator('*', pre=True)
     def blank_strings(cls, v):
         if type(v) == str:
@@ -17,6 +15,10 @@ class BaseSchema(BaseModel):
         return v
 
 
-class NameDescriptionSchema(BaseSchema):
+class StatusSchema(BaseSchema):
+    status: Optional[Status] = Field(Status.ACTIVE)
+
+
+class NameDescriptionSchema(StatusSchema):
     name: str = Field(..., min_length=3, max_length=70, description="Name is required")
     description: str
