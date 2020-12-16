@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI, Depends
 from config import Config
 from db import init_db
-from src.api import investments, properties, auth
+from src.api import investments, properties, auth, pages
 from src.utils import security
 
 
