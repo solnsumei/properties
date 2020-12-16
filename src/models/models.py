@@ -48,6 +48,13 @@ class Investment(SluggableModel):
     image_url = fields.CharField(max_length=250)
 
 
+class Page(SluggableModel):
+    name = fields.CharField(max_length=50, unique=True)
+    content = fields.TextField()
+    image_url = fields.CharField(max_length=250, null=True)
+
+
 UserPydantic = pydantic_model_creator(User, name="User")
 PropertyPydantic = pydantic_model_creator(Property, name="Property")
 InvestmentPydantic = pydantic_model_creator(Investment, name="Investment")
+PagePydantic = pydantic_model_creator(Page, name="Page")
