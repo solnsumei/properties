@@ -1,6 +1,16 @@
 from typing import Optional
 from pydantic import Field, AnyUrl, EmailStr
-from .baseschema import NameDescriptionSchema, BaseSchema
+from .baseschema import NameDescriptionSchema, NameSchema, BaseSchema
+
+
+class AuthSchema(BaseSchema):
+    email: EmailStr
+    password: str
+
+
+class PageSchema(NameSchema):
+    content: str
+    image_url: Optional[AnyUrl] = None
 
 
 class InvestmentSchema(NameDescriptionSchema):
@@ -17,8 +27,3 @@ class PropertySchema(NameDescriptionSchema):
     promo_price: Optional[float] = Field(None, gt=0)
     is_promo: bool
     image_url: AnyUrl
-
-
-class AuthSchema(BaseSchema):
-    email: EmailStr
-    password: str
