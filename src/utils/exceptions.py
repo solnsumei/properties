@@ -11,7 +11,7 @@ class UnauthorisedException(HTTPException):
     def __init__(self, message: str = None):
         super().__init__(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=message or "Please provide authorization token",
+            detail=message or "Access token is missing or invalid",
             headers={"WWW-Authenticate": "Bearer"}
         )
 

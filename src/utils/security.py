@@ -41,7 +41,7 @@ def check_token(auth_token=Depends(HTTPBearer(
         if username is None:
             raise JWTError
     except JWTError:
-        raise UnauthorisedException("Authentication failed, invalid token")
+        raise UnauthorisedException("Access token is invalid")
     return username
 
 
@@ -53,7 +53,7 @@ async def get_current_user(username: str = Depends(check_token)):
     """
     user = await User.find_by_email(email=username)
     if user is None:
-        raise UnauthorisedException("Authentication failed, invalid token")
+        raise UnauthorisedException("Access token is invalid")
     return user
 
 
