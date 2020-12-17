@@ -18,8 +18,8 @@ async def authenticate(email: str, password: str):
 
 
 def check_token(auth_token=Depends(HTTPBearer(
-    scheme_name="auth",
-    bearerFormat="Bearer",
+    scheme_name="bearerAuth",
+    bearerFormat="JWT",
     auto_error=False,
 ))):
     """
