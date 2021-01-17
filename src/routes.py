@@ -1,5 +1,5 @@
 from fastapi import Depends
-from src.api import investments, properties, auth, pages
+from src.resources import investments, properties, auth, pages
 from src.utils import security
 
 
